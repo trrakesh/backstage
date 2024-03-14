@@ -1,0 +1,22 @@
+{
+  "$schema": "https://backstage.io/schema/config-v1",
+  "type": "object",
+  "properties": {
+    "customUI": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "object",
+          "description": "columns",
+          "visibility": "frontend"
+        }
+      },
+      "required": [
+        "customUI"
+      ]
+    },
+    "required": [
+      "customUI"
+    ]
+  }
+}

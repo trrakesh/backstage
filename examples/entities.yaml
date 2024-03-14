@@ -19,6 +19,111 @@ spec:
   system: examples
   providesApis: [example-grpc-api]
 ---
+apiVersion: backstage.io/v1alpha1
+kind: Product
+metadata:
+  name: example-website1
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples1
+  providesApis: [example-grpc-api]
+  projectInfo:
+    modality: "MR"
+    bodyParts: "HEAD"
+    processingPurpose: "NA"
+    protocol: "HTTP"
+    algorithmType: "C"
+    packageType: "PK"
+    supportedOs: "LI"
+    sourceCodeLanguage: "CPP"
+    developmentStatus: "OPEN"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Product
+metadata:
+  name: example-website2
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples2
+  providesApis: [example-grpc-api]
+  projectInfo:
+    modality: "UL"
+    bodyParts: "HEAD"
+    processingPurpose: "NA"
+    protocol: "HTTP"
+    algorithmType: "C"
+    packageType: "PK"
+    supportedOs: "WIN"
+    sourceCodeLanguage: "C#"
+    developmentStatus: "OPEN"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Product
+metadata:
+  name: example-website3
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples3
+  providesApis: [example-grpc-api]
+  projectInfo:
+    modality: "MR"
+    bodyParts: "HEAD"
+    processingPurpose: "NA"
+    protocol: "HTTP"
+    algorithmType: "C"
+    packageType: "PK"
+    supportedOs: "WIN"
+    sourceCodeLanguage: "C"
+    developmentStatus: "OPEN"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Product
+metadata:
+  name: example-website4
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples4
+  providesApis: [example-grpc-api]
+  projectInfo:
+    modality: "CT"
+    bodyParts: "HEAD"
+    processingPurpose: "NA"
+    protocol: "HTTP"
+    algorithmType: "C"
+    packageType: "PK"
+    supportedOs: "WIN"
+    sourceCodeLanguage: "C"
+    developmentStatus: "OPEN"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Product
+metadata:
+  name: example-website5
+spec:
+  type: website
+  lifecycle: experimental
+  owner: guests
+  system: examples5
+  providesApis: [example-grpc-api]
+  projectInfo:
+    modality: "NM"
+    bodyParts: "HEAD"
+    processingPurpose: "NA"
+    protocol: "HTTP"
+    algorithmType: "C"
+    packageType: "PK"
+    supportedOs: "WIN"
+    sourceCodeLanguage: "C"
+    developmentStatus: "OPEN"
+---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-api
 apiVersion: backstage.io/v1alpha1
 kind: API

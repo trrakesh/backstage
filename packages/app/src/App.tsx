@@ -4,6 +4,8 @@ import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,
   CatalogIndexPage,
+  CatalogTable,
+  CatalogTableColumnsFunc,
   catalogPlugin,
 } from '@backstage/plugin-catalog';
 import {
@@ -34,6 +36,12 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { RoleManagementPage } from '@internal/backstage-plugin-role-management';
+import { configApiRef, useApi } from '@backstage/core-plugin-api';
+
+import { CustomFilter, CustomUiColumns, EntityCustomPicker, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
+import { EntityKindPicker } from '@backstage/plugin-catalog-react';
+import { DefaultFilters } from '@backstage/plugin-catalog-react';
+// import { CustomUiPage } from '@internal/backstage-plugin-custom-ui';
 
 const app = createApp({
   apis,
@@ -56,10 +64,53 @@ const app = createApp({
   },
 });
 
+// const cols = useApi(configApiRef).getConfig('customUI') as any;
+// const customUiColumns = cols?.data?.columns as CustomUiColumns[];
+
+// const columns = [CatalogTable.columns.createNameColumn()];
+// customUiColumns ? customUiColumns?.forEach((x: any) => {
+//     columns.push({
+//         title: x.title,
+//         field: `entity.spec.projectInfo.${x.field}`,
+//         width: 'auto',
+//     });
+// }) : [];
+
+const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
+
+  if (entityListContext.filters.kind?.value === 'product') {
+
+    const customUiColumns = getcustomUIcolumns();
+
+    const columns = [CatalogTable.columns.createNameColumn({defaultKind: 'Product'})]
+    customUiColumns ? customUiColumns?.forEach((x: any) => {
+        columns.push({
+            title: x.title,
+            field: `entity.spec.projectInfo.${x.field}`,
+        });
+    }) : [];
+    return columns;
+
+
+  }
+  return CatalogTable.defaultColumnsFunc(entityListContext);
+};
+
+
 const routes = (
   <FlatRoutes>
     <Route path="/" element={<Navigate to="catalog" />} />
-    <Route path="/catalog" element={<CatalogIndexPage />} />
+    <Route path="/catalog" element={
+      <CatalogIndexPage
+        columns={customColumnsFunc}
+        filters={
+          <>
+            <EntityKindPicker initialFilter='product' />
+            <CustomFilter />
+          </>
+        }
+      />}
+    />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}
@@ -95,6 +146,7 @@ const routes = (
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/role-management" element={<RoleManagementPage />} />
+
   </FlatRoutes>
 );
 

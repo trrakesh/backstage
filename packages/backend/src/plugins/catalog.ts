@@ -10,6 +10,7 @@ import { ConfluenceUpdateProcess } from "@internal/backstage-plugin-confluence-c
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
+  
   const builder = await CatalogBuilder.create(env);
   
   builder.addProcessor(new ScaffolderEntitiesProcessor());
@@ -17,6 +18,7 @@ export default async function createPlugin(
   builder.addProcessor(new ConfluenceUpdateProcess(env.config));
 
   const { processingEngine, router } = await builder.build();
+
   await processingEngine.start();
   return router;
 }

@@ -74,7 +74,7 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Product]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -101,3 +101,35 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+customUI:
+  columns:
+    - title: Modality
+      field: modality
+      filter: true
+    - title: Body Parts
+      field: bodyParts
+      filter: true
+    - title: Processing Purpose
+      field: processingPurpose
+      filter: true
+    - title: Protocol
+      field: protocol
+      filter: true
+    - title: Algorithm Type
+      field: algorithmType
+      filter: true
+    - title: Package Type
+      field: packageType
+      filter: true
+    - title: Supported OS
+      field: supportedOs
+      filter: true
+    - title: Source Code Language
+      field: sourceCodeLanguage
+      filter: true
+    - title: Development Status
+      field: developmentStatus
+      filter: true
+    - title: Body Parts
+      field: bodyParts
+      filter: true
