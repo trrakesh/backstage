@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import ExtensionIcon from '@material-ui/icons/Extension';
 import MapIcon from '@material-ui/icons/MyLocation';
+import MuiPeopleIcon from '@material-ui/icons/People';
+import MuiPersonIcon from '@material-ui/icons/Person';
+import Security from '@material-ui/icons/Security';
 import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import LogoFull from './LogoFull';
@@ -66,13 +69,17 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
         {/* Global nav, not org-specific */}
         <SidebarItem icon={HomeIcon} to="catalog" text="Home" />
-        <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
+        {/* <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" /> */}
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>
           <SidebarItem icon={MapIcon} to="tech-radar" text="Tech Radar" />
+          <SidebarDivider />
+          <SidebarItem icon={MuiPersonIcon} to="user-management" text="Users" />
+          <SidebarItem icon={MuiPeopleIcon} to="group-management" text="Groups" />
+          <SidebarItem icon={Security} to="role-management" text="Roles" />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />

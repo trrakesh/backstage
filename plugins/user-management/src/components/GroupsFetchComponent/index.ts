@@ -1,0 +1,1 @@
+export { GroupsFetchComponent } from './GroupsFetchComponent';

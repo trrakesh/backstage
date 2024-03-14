@@ -35,13 +35,10 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
-import { RoleManagementPage } from '@internal/backstage-plugin-role-management';
-import { configApiRef, useApi } from '@backstage/core-plugin-api';
 
-import { CustomFilter, CustomUiColumns, EntityCustomPicker, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
+import { CustomFilter, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
 import { EntityKindPicker } from '@backstage/plugin-catalog-react';
-import { DefaultFilters } from '@backstage/plugin-catalog-react';
-// import { CustomUiPage } from '@internal/backstage-plugin-custom-ui';
+import { GroupManagementPage, RoleManagementPage, UserManagementPage,  } from '@internal/backstage-plugin-user-management';
 
 const app = createApp({
   apis,
@@ -82,12 +79,12 @@ const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
 
     const customUiColumns = getcustomUIcolumns();
 
-    const columns = [CatalogTable.columns.createNameColumn({defaultKind: 'Product'})]
+    const columns = [CatalogTable.columns.createNameColumn({ defaultKind: 'Product' })]
     customUiColumns ? customUiColumns?.forEach((x: any) => {
-        columns.push({
-            title: x.title,
-            field: `entity.spec.projectInfo.${x.field}`,
-        });
+      columns.push({
+        title: x.title,
+        field: `entity.spec.projectInfo.${x.field}`,
+      });
     }) : [];
     return columns;
 
@@ -145,8 +142,9 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/user-management" element={<UserManagementPage />} />
+    <Route path="/group-management" element={<GroupManagementPage />} />
     <Route path="/role-management" element={<RoleManagementPage />} />
-
   </FlatRoutes>
 );
 

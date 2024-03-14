@@ -281,9 +281,9 @@ const userPage = (
         <Grid item xs={12} md={6}>
           <EntityUserProfileCard variant="gridItem" />
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <EntityOwnershipCard variant="gridItem" />
-        </Grid>
+        </Grid> */}
       </Grid>
     </EntityLayout.Route>
   </EntityLayout>
@@ -298,13 +298,12 @@ const groupPage = (
           <EntityGroupProfileCard variant="gridItem" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <EntityOwnershipCard variant="gridItem" />
+          <EntityMembersListCard pageSize={5} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <EntityMembersListCard />
+         
         </Grid>
         <Grid item xs={12} md={6}>
-          <EntityLinksCard />
         </Grid>
       </Grid>
     </EntityLayout.Route>
