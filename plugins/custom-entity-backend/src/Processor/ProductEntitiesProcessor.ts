@@ -63,7 +63,7 @@ export class ProductEntitiesProcessor implements CatalogProcessor {
         console.log('------------------------------------------------------------------');
         console.log('------------------------------------------------------------------');
         console.log('------------------------------------------------------------------');
-        console.log( entity.kind);
+        console.log( entity);
 
         if (
             entity.apiVersion === 'backstage.io/v1alpha1' &&
