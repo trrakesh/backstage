@@ -32,9 +32,15 @@ import { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 
+import { ArtifactoryUrlReader } from "@internal/backstage-plugin-artifactory-integration-backend";
+import { SvnUrlReader } from "@internal/backstage-plugin-svn-integration-backend";
+
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
-  const reader = UrlReaders.default({ logger: root, config });
+  
+  const factories = [SvnUrlReader.factory, ArtifactoryUrlReader.factory];
+  const reader = UrlReaders.default({ logger: root, config, factories });
+
   const discovery = HostDiscovery.fromConfig(config);
   const cacheManager = CacheManager.fromConfig(config);
   const databaseManager = DatabaseManager.fromConfig(config, { logger: root });
