@@ -39,9 +39,19 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 import { CustomFilter, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
 import { EntityKindPicker } from '@backstage/plugin-catalog-react';
 import { GroupManagementPage, RoleManagementPage, UserManagementPage,  } from '@internal/backstage-plugin-user-management';
+import { SignInPage } from '@internal/backstage-plugin-custom-user-login';
+
+// import { LdapAuthFrontendPage } from '@immobiliarelabs/backstage-plugin-ldap-auth';
 
 const app = createApp({
   apis,
+  components: {
+    SignInPage: props => {
+      return (
+        <SignInPage {...props} />
+      );
+    },
+  },
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,

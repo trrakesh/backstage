@@ -8,10 +8,7 @@ organization:
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
   # See https://backstage.io/docs/auth/service-to-service-auth for
-  # information on the format
-  # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
+
   baseUrl: http://localhost:7007
   listen:
     port: 7007
@@ -62,19 +59,74 @@ techdocs:
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
-auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
-
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
+auth:
+  ### Add auth.keyStore.provider to more granularly control how to store JWK data when running
+  # the auth-backend.
+  #
+  # keyStore:
+  #  provider: firestore
+  #  firestore:
+  #    projectId: my-project
+  #    path: my-sessions
+
+  environment: development
+  ### Providing an auth.session.secret will enable session support in the auth-backend
+  # session:
+  #   secret: custom session secret
+  providers:
+    custom:
+      cookies:
+        secure: false # https cookies or not
+        field: 'backstage-token-custom' # default
+    ldap:
+      development:
+        cookies:
+          secure: false # https cookies or not
+          field: 'backstage-token' # default
+        ldapAuthenticationOptions:
+          userSearchBase: 'ou=People,dc=example,dc=com' # REQUIRED
+          # what is the user unique key in your ldap instance
+          usernameAttribute: 'uid' # defaults to `uid`
+          # directory where to search user
+          # default search will be `[userSearchBase]=[username],[userSearchBase]`
+
+          # User able to list other users, this is used
+          # to check incoming JWT if user are already part of the LDAP
+          # NOTE: If no admin user/pass provided we'll attempt a credential-less search
+          adminDn: cn=admin,dc=example,dc=com
+          adminPassword: 'Eadmed@123'
+          ldapOpts:
+            url:
+              - 'ldap://57.180.241.191:389'
+            tlsOptions:
+              rejectUnauthorized: false
 catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location, Product]
+  processors:
+    ldapOrg:
+      ## Example for how to add your enterprise LDAP server
+      providers:
+        - target: ldap://57.180.241.191:389
+          bind:
+            dn: cn=admin,dc=example,dc=com
+            secret: Eadmed@123
+          users:
+            dn: ou=People,dc=example,dc=com
+            # options:
+            #   filter: (uid=*)
+            # map:
+            #   description: l
+          groups:
+            dn: ou=Groups,dc=example,dc=com
+            # options:
+            #   filter: (&(objectClass=some-group-class)(!(groupType=email)))
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
@@ -87,8 +139,8 @@ catalog:
         - allow: [Template]
 
     # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
+    - type: ldap-org
+      target: ldap://57.180.241.191:389
       rules:
         - allow: [User, Group]
 
@@ -101,6 +153,7 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+
 customUI:
   columns:
     - title: Modality

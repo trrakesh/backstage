@@ -6,6 +6,18 @@ import {
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 
+import {
+  ldap,
+  JWTTokenValidator,
+} from '@immobiliarelabs/backstage-plugin-ldap-auth-backend';
+
+import {
+  normal,
+  CustomJWTTokenValidator,
+} from '@internal/backstage-plugin-custom-user-login-backend';
+
+import Keyv from 'keyv';
+
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
@@ -35,6 +47,13 @@ export default async function createPlugin(
       // your own, see the auth documentation for more details:
       //
       //   https://backstage.io/docs/auth/identity-resolver
+      ldap: ldap.create({
+        tokenValidator: new JWTTokenValidator(new Keyv()),
+      }),
+      normal: normal.create({
+        tokenValidator: new CustomJWTTokenValidator(new Keyv()),
+      }),
+      
       github: providers.github.create({
         signIn: {
           resolver(_, ctx) {
