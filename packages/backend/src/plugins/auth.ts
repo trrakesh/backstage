@@ -50,7 +50,7 @@ export default async function createPlugin(
       ldap: ldap.create({
         tokenValidator: new JWTTokenValidator(new Keyv()),
       }),
-      normal: normal.create({
+      custom: normal.create({
         tokenValidator: new CustomJWTTokenValidator(new Keyv()),
       }),
       

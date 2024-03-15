@@ -13,6 +13,7 @@ import {
 
 
 export const DB_ANNOTATION = 'backstage.io/db-user';
+export const CUSTOM_USER_ANNOTATION = 'custom-user/db-user';
 
 
 export class UserEntityProvider implements EntityProvider {
@@ -141,6 +142,7 @@ function withLocations(providerId: string, entity: Entity): Entity {
                 annotations: {
                     [ANNOTATION_LOCATION]: location,
                     [ANNOTATION_ORIGIN_LOCATION]: location,
+                    [CUSTOM_USER_ANNOTATION]: entity.metadata.name,
                 },
             },
         },

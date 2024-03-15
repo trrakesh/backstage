@@ -1,8 +1,8 @@
-import { Content, Header, IdentityProviders, InfoCard, Page, Progress, SignInProviderConfig, UserIdentity } from '@backstage/core-components';
+import { Content, Header, Page, Progress } from '@backstage/core-components';
 import { SignInPageProps, configApiRef, useApi } from '@backstage/core-plugin-api';
-import React, { useState } from 'react';
-import { GridItem, useStyles } from './styles';
-import { Button, Grid, Typography } from '@material-ui/core';
+import React from 'react';
+import { useStyles } from './styles';
+import { Grid } from '@material-ui/core';
 import { getSignInProviders, useSignInProviders } from './providers';
 
 // type SingleSignInPageProps = SignInPageProps & {

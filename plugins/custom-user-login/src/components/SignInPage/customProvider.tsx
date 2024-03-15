@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import { InfoCard } from "@backstage/core-components";
 import Button from '@material-ui/core/Button';

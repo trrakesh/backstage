@@ -8,10 +8,11 @@ import {
 } from '@backstage/plugin-auth-node';
 
 import { parseJwtPayload } from './jwt';
-import { CustomUser } from './CustomUser';
-// import { AuthenticationOptions } from './type';
 import { AUTH_USER_NOT_FOUND } from './errors';
-import { BackstageIdentityResponse, BackstageSignInResult } from './type';
+import { BackstageIdentityResponse, BackstageSignInResult, CustomUser } from './type';
+import { Entity, stringifyEntityRef } from '@backstage/catalog-model';
+
+export const CUSTOM_USER_ANNOTATION = 'custom-user/db-user';
 
 export function prepareBackstageIdentityResponse(
     result: BackstageSignInResult
@@ -28,30 +29,40 @@ export function prepareBackstageIdentityResponse(
     };
 }
 
-export const defaultSigninResolver: SignInResolver<CustomUser> = async ({ result },
-    ctx: AuthResolverContext
-): Promise<BackstageSignInResult> => {
-    const backstageIdentity: BackstageSignInResult =
-        await ctx.signInWithCatalogUser({
-            entityRef: result.uid,
-        });
+export const defaultSigninResolver = async (entity: Entity, ctx: AuthResolverContext): Promise<BackstageSignInResult> => {
+    // const backstageIdentity: BackstageSignInResult = await ctx.signInWithCatalogUser({
+    //     entityRef: `user:default/${user.username}`,
+    // });
+
+    // await ctx.signInWithCatalogUser({
+    //     entityRef: result.uid as string,
+    // });
+
+    const backstageIdentity = await ctx.issueToken({
+        claims: {
+          sub: stringifyEntityRef(entity),
+          ent: []
+        }
+      });
+
+    // const s: BackstageSignInResult = {token: token1};
+    // return { token: token1 };
 
     return backstageIdentity;
 };
 
-export const defaultAuthHandler: AuthHandler<CustomUser> = async (
-    { uid },
-    ctx: AuthResolverContext
-): Promise<{ profile: ProfileInfo }> => {
+export const defaultAuthHandler = async (
+    user: CustomUser, 
+    ctx: AuthResolverContext): Promise<{ profile: ProfileInfo, entity: Entity }> => {
     const backstageUserData = await ctx.findCatalogUser({
-        entityRef: uid as string,
+        annotations: {
+            'custom-user/db-user': user.username,
+        },
     });
-    return { profile: backstageUserData?.entity?.spec?.profile as ProfileInfo };
-
-    // return { profile: {
-    //     email: "admin@example.com",
-    //     displayName: "Admin"
-    // }}
+    return { 
+        profile: backstageUserData?.entity?.spec?.profile as ProfileInfo,
+        entity: backstageUserData?.entity as Entity
+    };
 };
 
 // export const defaultCheckUserExists = async (
@@ -74,17 +85,13 @@ export async function defaultCustomAuthentication(
 ): Promise<CustomUser> {
    
     try {
-        if (username == 'admin' && password == 'admin') {
-            return {
-                username: 'admin',
-                uid: 'user:default/rakesh',
-                email: 'admin@example.com'
-            }
+        if (username == 'user1' && password == 'user1') {
+            return { username }
         }
         throw new Error(AUTH_USER_NOT_FOUND); 
     } catch (e) {
         console.error(
-            'There was an error when trying to login with ldap-authentication'
+            'There was an error when trying to login with db-authentication'
         );
         throw e;
     }

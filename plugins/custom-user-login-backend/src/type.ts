@@ -4,6 +4,7 @@ import {
     defaultCustomAuthentication, 
     defaultSigninResolver 
 } from "./auth";
+
 import { TokenValidator } from "./jwt";
 
 import {
@@ -110,3 +111,9 @@ export type ProviderConstructor = {
     resolverContext: AuthResolverContext;
     tokenValidator?: TokenValidator;
 };
+
+export type CustomUser = {
+    username: string;
+    // email: string;
+    // uid: string;
+}

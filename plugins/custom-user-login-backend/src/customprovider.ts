@@ -2,7 +2,7 @@
 import { createAuthProviderIntegration } from '@backstage/plugin-auth-backend';
 import { defaultAuthHandler, defaultCustomAuthentication, defaultSigninResolver, prepareBackstageIdentityResponse } from './auth';
 import { COOKIE_FIELD_KEY, CustomJWTTokenValidator, TokenValidator, TokenValidatorNoop, normalizeTime, parseJwtPayload } from './jwt';
-import { CookiesOptions, ProviderConstructor, ProviderCreateOptions } from './type';
+import { CookiesOptions, CustomUser, ProviderConstructor, ProviderCreateOptions } from './type';
 
 import {
     AuthProviderRouteHandlers,
@@ -13,8 +13,6 @@ import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 import { AuthenticationError } from '@backstage/errors';
-import { CustomUser } from './CustomUser';
-
 
 export class CustomAuthProvider implements AuthProviderRouteHandlers {
 
@@ -58,12 +56,11 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
             let result: CustomUser;
 
             if (username && password) {
-                result = await this.authentication(
-                    username,
-                    password
-                );
+
+                result = await this.authentication(username, password);
 
             } else if (token) {
+
                 // this throws if the token is invalid or expired
                 await this.jwtValidator.isValid(token as string);
 
@@ -73,8 +70,6 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
                 const uid = sub.split(':').at(-1)!.split('/').at(-1);
                 result = await this.check(uid as string);
 
-                //result = 'user:default/guest'
-
             } else {
                 throw new AuthenticationError(AUTH_MISSING_CREDENTIALS);
             }
@@ -83,13 +78,12 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
             if (token) await this.jwtValidator.invalidateToken(token);
 
             // This is used to return a backstage formated profile object
-            const { profile } = await this.authHandler(result, ctx );
+            const { profile, entity } = await this.authHandler(result, ctx );
 
+            console.log(entity);
+            
             // this sign-in the user into backstage and return an object with the token
-            const backstageIdentity = await this.signInResolver(
-                { profile, result },
-                ctx
-            );
+            const backstageIdentity = await this.signInResolver(entity, ctx);
 
             const response = {
                 providerInfo: {},
@@ -132,11 +126,9 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
         //     authenticate
         // );
         // if (!exists) throw new Error(JWT_INVALID_TOKEN);
-        if (uid === 'user:default/rakesh') {          
+        if (uid === 'user1') {          
             return {
-                username: 'admin',
-                uid: 'user:default/rakesh',
-                email: 'admin@example.com'
+                username: uid,
             }
         } else {
             throw new Error(JWT_INVALID_TOKEN);

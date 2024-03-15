@@ -36,7 +36,6 @@ import {
   EntityUserProfileCard,
   EntityGroupProfileCard,
   EntityMembersListCard,
-  EntityOwnershipCard,
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { EmptyState } from '@backstage/core-components';
