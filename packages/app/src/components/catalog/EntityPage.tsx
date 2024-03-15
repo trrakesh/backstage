@@ -56,6 +56,7 @@ import {
 
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
+import { RoleSelectionCard } from '@internal/backstage-plugin-user-management';
 
 const techdocsContent = (
   <EntityTechdocsContent>
@@ -280,9 +281,9 @@ const userPage = (
         <Grid item xs={12} md={6}>
           <EntityUserProfileCard variant="gridItem" />
         </Grid>
-        {/* <Grid item xs={12} md={6}>
-          <EntityOwnershipCard variant="gridItem" />
-        </Grid> */}
+        <Grid item xs={12} md={6}>
+          <RoleSelectionCard variant="gridItem" />
+        </Grid>
       </Grid>
     </EntityLayout.Route>
   </EntityLayout>

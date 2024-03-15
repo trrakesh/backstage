@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Table,
   TableColumn,
@@ -7,87 +6,30 @@ import {
   ResponseErrorPanel,
 } from '@backstage/core-components';
 import useAsync from 'react-use/lib/useAsync';
-
-export const exampleUsers = {
-  results: [
-    {
-      gender: 'female',
-      name: {
-        title: 'Miss',
-        first: 'Carolyn',
-        last: 'Moore',
-      },
-      email: 'carolyn.moore@example.com',
-      picture: 'https://api.dicebear.com/6.x/open-peeps/svg?seed=Carolyn',
-      nat: 'GB',
-    },
-    {
-      gender: 'female',
-      name: {
-        title: 'Ms',
-        first: 'Esma',
-        last: 'Berberoğlu',
-      },
-      email: 'esma.berberoglu@example.com',
-      picture: 'https://api.dicebear.com/6.x/open-peeps/svg?seed=Esma',
-      nat: 'TR',
-    }
-  ],
-};
-
-const useStyles = makeStyles({
-  avatar: {
-    height: 32,
-    width: 32,
-    borderRadius: '50%',
-  },
-});
-
-type User = {
-  gender: string; // "male"
-  name: {
-    title: string; // "Mr",
-    first: string; // "Duane",
-    last: string; // "Reed"
-  };
-  email: string; // "duane.reed@example.com"
-  picture: string; // "https://api.dicebear.com/6.x/open-peeps/svg?seed=Duane"
-  nat: string; // "AU"
-};
+import { RoleManagementData } from '@internal/backstage-plugin-role-management-common';
+import { useApi } from '@backstage/core-plugin-api';
+import { roleMappingApiRef } from '../../apis';
 
 type DenseTableProps = {
-  users: User[];
+  roles: RoleManagementData[];
 };
 
-export const DenseTable = ({ users }: DenseTableProps) => {
-  const classes = useStyles();
+export const DenseTable = ({ roles }: DenseTableProps) => {
 
   const columns: TableColumn[] = [
-    { title: 'Avatar', field: 'avatar' },
     { title: 'Name', field: 'name' },
-    { title: 'Email', field: 'email' },
-    { title: 'Nationality', field: 'nationality' },
   ];
 
-  const data = users.map(user => {
+  const data = roles.map(role => {
     return {
-      avatar: (
-        <img
-          src={user.picture}
-          className={classes.avatar}
-          alt={user.name.first}
-        />
-      ),
-      name: `${user.name.first} ${user.name.last}`,
-      email: user.email,
-      nationality: user.nat,
+      name: role.info.roleName,
     };
   });
 
   return (
     <Table
-      title="User List"
-      options={{ search: false, paging: false }}
+      title="Role List"
+      options={{ search: true, paging: false }}
       columns={columns}
       data={data}
     />
@@ -96,9 +38,11 @@ export const DenseTable = ({ users }: DenseTableProps) => {
 
 export const RolesFetchComponent = () => {
 
-  const { value, loading, error } = useAsync(async (): Promise<User[]> => {
+  const roleApi = useApi(roleMappingApiRef);
+
+  const { value, loading, error } = useAsync(async (): Promise<RoleManagementData[]> => {
     // Would use fetch in a real world example
-    return exampleUsers.results;
+    return await roleApi.getRoles();
   }, []);
 
   if (loading) {
@@ -107,5 +51,5 @@ export const RolesFetchComponent = () => {
     return <ResponseErrorPanel error={error} />;
   }
 
-  return <DenseTable users={value || []} />;
+  return <DenseTable roles={value || []} />;
 };
