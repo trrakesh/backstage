@@ -4,8 +4,6 @@ import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,
   CatalogIndexPage,
-  CatalogTable,
-  CatalogTableColumnsFunc,
   catalogPlugin,
 } from '@backstage/plugin-catalog';
 import {
@@ -23,7 +21,7 @@ import {
 } from '@backstage/plugin-techdocs';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { UserSettingsPage, useUserProfile } from '@backstage/plugin-user-settings';
+import { UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
@@ -36,22 +34,20 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
-import { CustomFilter, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
-import { EntityKindPicker } from '@backstage/plugin-catalog-react';
-import { CreateRolePage, GroupManagementPage, RoleManagementPage, UserManagementPage, getUserPermission,  } from '@internal/backstage-plugin-user-management';
+import { CreateRolePage, GroupManagementPage, RoleManagementPage, UserManagementPage, } from '@internal/backstage-plugin-user-management';
 import { SignInPage } from '@internal/backstage-plugin-custom-user-login';
 
-// import { LdapAuthFrontendPage } from '@immobiliarelabs/backstage-plugin-ldap-auth';
+import { CustomUiPage } from '@internal/backstage-plugin-custom-ui';
 
 const app = createApp({
   apis,
-  // components: {
-  //   SignInPage: props => {
-  //     return (
-  //       <SignInPage {...props} />
-  //     );
-  //   },
-  // },
+  components: {
+    SignInPage: props => {
+      return (
+        <SignInPage {...props} />
+      );
+    },
+  },
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
@@ -71,60 +67,11 @@ const app = createApp({
   },
 });
 
-// const cols = useApi(configApiRef).getConfig('customUI') as any;
-// const customUiColumns = cols?.data?.columns as CustomUiColumns[];
-
-// const columns = [CatalogTable.columns.createNameColumn()];
-// customUiColumns ? customUiColumns?.forEach((x: any) => {
-//     columns.push({
-//         title: x.title,
-//         field: `entity.spec.projectInfo.${x.field}`,
-//         width: 'auto',
-//     });
-// }) : [];
-
-const customColumnsFunc: CatalogTableColumnsFunc =  entityListContext => {
-
-  if (entityListContext.filters.kind?.value === 'product') {
-
-    const customUiColumns = getcustomUIcolumns();
-    //const { backstageIdentity } = useUserProfile();
-    // const roleData = getUserPermission();
-
-    // console.log(roleData);
-
-    const columns = [CatalogTable.columns.createNameColumn({ defaultKind: 'Product' })]
-
-    customUiColumns ? customUiColumns?.forEach((x: any) => {
-      columns.push({
-        title: x.title,
-        field: `entity.spec.projectInfo.${x.field}`,
-      });
-
-    }) : [];
-
-    return columns;
-
-
-  }
-  return CatalogTable.defaultColumnsFunc(entityListContext);
-};
-
-
 const routes = (
   <FlatRoutes>
-    <Route path="/" element={<Navigate to="catalog" />} />
-    <Route path="/catalog" element={
-      <CatalogIndexPage
-        columns={customColumnsFunc}
-        filters={
-          <>
-            <EntityKindPicker initialFilter='product' />
-            <CustomFilter />
-          </>
-        }
-      />}
-    />
+    <Route path="/" element={<Navigate to="custom" />} />
+    <Route path="/custom" element={<CustomUiPage />} />
+    <Route path="/catalog" element={<CatalogIndexPage />} />
     <Route
       path="/catalog/:namespace/:kind/:name"
       element={<CatalogEntityPage />}

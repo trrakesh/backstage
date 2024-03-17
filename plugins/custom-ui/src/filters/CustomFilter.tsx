@@ -1,13 +1,16 @@
 import React from 'react';
 import { EntityCustomPicker } from "./EntityCustomPicker";
-import {  getcustomUIcolumns } from "./util";
+import { CustomUiColumns } from '../types';
 
-export const CustomFilter = () => {
-    const customUiColumns = getcustomUIcolumns();
+export const CustomFilter = (props: {customColumns: CustomUiColumns[] }) => {
+    const {customColumns} = props;
     return (
         <>
             {
-                customUiColumns?.filter(x => x.filter).map(y => <EntityCustomPicker label={y.title} path={y.field} />)
+                customColumns
+                .filter(x => x.visible)
+                .filter(x => x.filter)
+                .map(y => <EntityCustomPicker label={y.title} path={y.field} />)
             }
         </>
     )

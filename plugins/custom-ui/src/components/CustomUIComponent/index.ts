@@ -1,0 +1,1 @@
+export { CustomUIComponent } from './CustomUIComponent';

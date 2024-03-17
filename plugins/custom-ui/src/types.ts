@@ -9,4 +9,5 @@ export type CustomUiColumns = {
     title: string;
     field: string;
     filter: boolean;
+    visible: boolean;
 }
