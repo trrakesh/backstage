@@ -83,25 +83,26 @@ const app = createApp({
 //     });
 // }) : [];
 
-const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
+const customColumnsFunc: CatalogTableColumnsFunc =  entityListContext => {
 
   if (entityListContext.filters.kind?.value === 'product') {
 
     const customUiColumns = getcustomUIcolumns();
     //const { backstageIdentity } = useUserProfile();
-    const roleData = await getUserPermission();
+    // const roleData = getUserPermission();
 
-    console.log(roleData);
+    // console.log(roleData);
 
     const columns = [CatalogTable.columns.createNameColumn({ defaultKind: 'Product' })]
+
     customUiColumns ? customUiColumns?.forEach((x: any) => {
-      
       columns.push({
         title: x.title,
         field: `entity.spec.projectInfo.${x.field}`,
       });
 
     }) : [];
+
     return columns;
 
 
