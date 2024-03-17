@@ -5,3 +5,8 @@ export type User = {
     entity: Entity,
     email?: string;
 };
+
+export type RoleSelectionCheckItem = {
+    key: string;
+    checked: boolean;
+}

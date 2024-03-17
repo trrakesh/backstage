@@ -23,7 +23,7 @@ import {
 } from '@backstage/plugin-techdocs';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { UserSettingsPage } from '@backstage/plugin-user-settings';
+import { UserSettingsPage, useUserProfile } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
@@ -38,7 +38,7 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 
 import { CustomFilter, getcustomUIcolumns } from "@internal/backstage-plugin-custom-ui";
 import { EntityKindPicker } from '@backstage/plugin-catalog-react';
-import { CreateRolePage, GroupManagementPage, RoleManagementPage, UserManagementPage,  } from '@internal/backstage-plugin-user-management';
+import { CreateRolePage, GroupManagementPage, RoleManagementPage, UserManagementPage, getUserPermission,  } from '@internal/backstage-plugin-user-management';
 import { SignInPage } from '@internal/backstage-plugin-custom-user-login';
 
 // import { LdapAuthFrontendPage } from '@immobiliarelabs/backstage-plugin-ldap-auth';
@@ -88,13 +88,19 @@ const customColumnsFunc: CatalogTableColumnsFunc = entityListContext => {
   if (entityListContext.filters.kind?.value === 'product') {
 
     const customUiColumns = getcustomUIcolumns();
+    //const { backstageIdentity } = useUserProfile();
+    const roleData = await getUserPermission();
+
+    console.log(roleData);
 
     const columns = [CatalogTable.columns.createNameColumn({ defaultKind: 'Product' })]
     customUiColumns ? customUiColumns?.forEach((x: any) => {
+      
       columns.push({
         title: x.title,
         field: `entity.spec.projectInfo.${x.field}`,
       });
+
     }) : [];
     return columns;
 

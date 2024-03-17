@@ -71,17 +71,34 @@ export type RoleSelectItem = {
   label: string; value: string
 };
 
+export type UserRoleData = {
+  id?: number,
+  name: string,
+  roles: string
+}
+
+export type UserRole = {
+  id?: number,
+  name: string,
+  roles: string[]
+}
+
 export interface RoleMappingApi {
 
   getRoles(): Promise<RoleManagementData[]>;
   createRole(data: RoleManagementData): Promise<RoleMappingApiStatus>;
   updateRole(data: RoleManagementData): Promise<RoleMappingApiStatus>;
 
-  getImportEntity(filter: ImportEntityFilter): Promise<ImportEntityData[]>;
-  createImportEntity(data: ImportEntityData): Promise<ImportEntityMappingApiStatus>;
-  updateImportEntity(data: ImportEntityData): Promise<ImportEntityMappingApiStatus>;
+  getUserRole(name: string): Promise<UserRole>;
+  createUserRole(data: UserRole): Promise<RoleMappingApiStatus>;
 
-  getPermissionByMail(mail: string): Promise<RolePermissonData[]>;
+  getUserPermission(name: string): Promise<RoleManagementData>;
+
+  // getImportEntity(filter: ImportEntityFilter): Promise<ImportEntityData[]>;
+  // createImportEntity(data: ImportEntityData): Promise<ImportEntityMappingApiStatus>;
+  // updateImportEntity(data: ImportEntityData): Promise<ImportEntityMappingApiStatus>;
+
+  // getPermissionByMail(mail: string): Promise<RolePermissonData[]>;
 
 }
 
