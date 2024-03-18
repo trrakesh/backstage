@@ -39,7 +39,7 @@ const asInputRef = (renderResult: UseFormRegisterReturn) => {
     };
 };
 
-const Component: ProviderComponent = ({ onSignInStarted, onSignInSuccess }) => {
+const Component: ProviderComponent = ({ onSignInSuccess }) => {
 
     const discoveryApi = useApi(discoveryApiRef);
     const classes = useFormStyles();

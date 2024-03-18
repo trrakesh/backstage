@@ -1,13 +1,9 @@
 import { ResponseError } from '@backstage/errors';
 import { createApiRef } from '@backstage/core-plugin-api';
 import { 
-    ImportEntityData,
-    ImportEntityFilter,
-    ImportEntityMappingApiStatus,
     RoleManagementData, 
     RoleMappingApi, 
     RoleMappingApiStatus,
-    RolePermissonData,
     UserRole, 
 } from "@internal/backstage-plugin-role-management-common"
 import { ApiBase } from './ApiBase';

@@ -6,7 +6,7 @@ import { Logger } from 'winston';
 import { applyDatabaseMigrations } from '../databases/migrations';
 import { getRoles, insertRole, updateRole } from './role-helper';
 //import { getImportEntity, getImportEntityFilter, insertImportEntity, updateImportEntity } from './import-entity-helper';
-import { ImportEntityData, ImportEntityFilter, RoleManagementData, RolePermissonData, UserRole } from '@internal/backstage-plugin-role-management-common';
+import { RoleManagementData, UserRole } from '@internal/backstage-plugin-role-management-common';
 import { createUserRoles, getUserRoles } from './user-role';
 import { getUserPermissions } from './permissions';
 

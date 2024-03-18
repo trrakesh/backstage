@@ -2,7 +2,7 @@ import { Logger } from "winston";
 
 import {
     GroupEntity,
-    stringifyEntityRef,
+    //stringifyEntityRef,
     UserEntity,
 } from '@backstage/catalog-model';
 
@@ -14,6 +14,9 @@ export async function readDBOrg(
     users: UserEntity[];
     groups: GroupEntity[];
 }> {
+
+
+    options.logger.info("readDBOrg");
 
     const users: UserEntity[] = [];
     const groups: GroupEntity[] = [];

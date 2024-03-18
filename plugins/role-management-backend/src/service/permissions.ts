@@ -1,4 +1,4 @@
-import { RoleData, RoleManagementData, UserRoleData } from "@internal/backstage-plugin-role-management-common";
+import { RoleData, RoleManagementData } from "@internal/backstage-plugin-role-management-common";
 //import data from "../data/data.json";
 
 export async function getUserPermissions(dbClient: any, name: string): Promise<RoleManagementData> {
@@ -13,7 +13,9 @@ export async function getUserPermissions(dbClient: any, name: string): Promise<R
     // if (result.length > 0) {
 
       
-    // } 
+    // }
+
+    console.log(name);
 
     const result = await dbClient('roles').select() as RoleData[];
     const data = result.map(x => {

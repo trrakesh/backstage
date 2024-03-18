@@ -1,10 +1,10 @@
 
 import { ProfileInfo } from '@backstage/core-plugin-api';
-import { AuthHandler } from '@backstage/plugin-auth-backend';
+//import { AuthHandler } from '@backstage/plugin-auth-backend';
 
 import {
     AuthResolverContext,
-    SignInResolver,
+//    SignInResolver,
 } from '@backstage/plugin-auth-node';
 
 import { parseJwtPayload } from './jwt';
