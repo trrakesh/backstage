@@ -88,14 +88,7 @@ auth:
           field: 'backstage-token' # default
         ldapAuthenticationOptions:
           userSearchBase: 'ou=People,dc=example,dc=com' # REQUIRED
-          # what is the user unique key in your ldap instance
           usernameAttribute: 'uid' # defaults to `uid`
-          # directory where to search user
-          # default search will be `[userSearchBase]=[username],[userSearchBase]`
-
-          # User able to list other users, this is used
-          # to check incoming JWT if user are already part of the LDAP
-          # NOTE: If no admin user/pass provided we'll attempt a credential-less search
           adminDn: cn=admin,dc=example,dc=com
           adminPassword: 'Eadmed@123'
           ldapOpts:
@@ -119,10 +112,6 @@ catalog:
             secret: Eadmed@123
           users:
             dn: ou=People,dc=example,dc=com
-            # options:
-            #   filter: (uid=*)
-            # map:
-            #   description: l
           groups:
             dn: ou=Groups,dc=example,dc=com
             # options:
