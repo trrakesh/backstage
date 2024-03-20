@@ -6,7 +6,7 @@ import { PluginEnvironment } from '../types';
 import { ProductEntitiesProcessor } from "@internal/backstage-plugin-custom-entity-backend";
 import { ConfluenceUpdateProcess } from "@internal/backstage-plugin-confluence-calalog-backend";
 
-import { UserEntityProvider } from "@internal/backstage-plugin-custom-user-backend";
+import {UserEntityProvider} from "@internal/backstage-plugin-role-management-backend"
 
 // import {
 //   LdapOrgEntityProvider,
@@ -15,6 +15,7 @@ import { UserEntityProvider } from "@internal/backstage-plugin-custom-user-backe
 
 export default async function createPlugin(
   env: PluginEnvironment,
+  roleManagementEnv: PluginEnvironment,
 ): Promise<Router> {
 
   const builder = await CatalogBuilder.create(env);
@@ -45,7 +46,7 @@ export default async function createPlugin(
 
   builder.addEntityProvider(UserEntityProvider.fromConfig(
     env.logger,
-    env.database,
+    roleManagementEnv.database,
     env.scheduler.createScheduledTaskRunner({
       frequency: { minutes: 3 },
       timeout: { minutes: 15 },

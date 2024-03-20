@@ -20,6 +20,7 @@ import Keyv from 'keyv';
 
 export default async function createPlugin(
   env: PluginEnvironment,
+  roleManagementEnv: PluginEnvironment
 ): Promise<Router> {
   return await createRouter({
     logger: env.logger,
@@ -52,7 +53,7 @@ export default async function createPlugin(
       // }),
       custom: normal.create({
           tokenValidator: new CustomJWTTokenValidator(new Keyv()),
-          database: env.database
+          database: roleManagementEnv.database
       }),
       
       // github: providers.github.create({

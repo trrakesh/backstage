@@ -18,8 +18,14 @@ export async function readDBOrg(
     groups: GroupEntity[];
 }> {
 
-
     options.logger.info("readDBOrg");
+
+    console.log("-----------------------------------------------");
+    console.log("-----------------------------------------------");
+    console.log("-------------readDBOrg----------------------------------");
+    console.log("-----------------------------------------------");
+    console.log("-----------------------------------------------");
+    console.log("-----------------------------------------------");
 
     const users: UserEntity[] = [];
     const groups: GroupEntity[] = [];
@@ -38,7 +44,12 @@ export async function readDBOrg(
         });
     
     } catch {
-        console.log("db not created yet");
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------");
+        console.log("-------------db not created yet----------------------------------");
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------");
     }
 
 

@@ -35,6 +35,7 @@ import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 
 import { ArtifactoryUrlReader } from "@internal/backstage-plugin-artifactory-integration-backend";
 import { SvnUrlReader } from "@internal/backstage-plugin-svn-integration-backend";
+import 'global-agent/bootstrap';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -95,9 +96,9 @@ async function main() {
   const roleManagementEnv = useHotMemoize(module, () => createEnv('role-management') );
 
   const apiRouter = Router();
-  apiRouter.use('/catalog', await catalog(catalogEnv));
+  apiRouter.use('/catalog', await catalog(catalogEnv, roleManagementEnv));
   apiRouter.use('/scaffolder', await scaffolder(scaffolderEnv));
-  apiRouter.use('/auth', await auth(authEnv));
+  apiRouter.use('/auth', await auth(authEnv, roleManagementEnv));
   apiRouter.use('/techdocs', await techdocs(techdocsEnv));
   apiRouter.use('/proxy', await proxy(proxyEnv));
   apiRouter.use('/search', await search(searchEnv));
