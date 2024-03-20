@@ -79,7 +79,6 @@ export async function createRouter(
   router.post('/user-role', async (request, response) => {
     const data = request.body as UserRole;
     const insertItem = { 
-      id: data.id,
       name: data.name,
       roles: JSON.stringify(data.roles),
     };

@@ -10,7 +10,7 @@ import { Entity } from '@backstage/catalog-model';
 
 export type RoleData = {
   id?: number;
-  info: string;
+  info: RoleInfomation;
 }
 
 export type EntityData = {
@@ -70,6 +70,11 @@ export type ImportEntityMappingApiStatus = {
 export type RoleSelectItem = {
   label: string; value: string
 };
+
+export type UserRoleDataDB = {
+  name: string,
+  roles: string
+}
 
 export type UserRoleData = {
   id?: number,

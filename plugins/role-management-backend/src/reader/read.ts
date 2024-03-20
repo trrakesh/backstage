@@ -20,12 +20,7 @@ export async function readDBOrg(
 
     options.logger.info("readDBOrg");
 
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-------------readDBOrg----------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
+    
 
     const users: UserEntity[] = [];
     const groups: GroupEntity[] = [];

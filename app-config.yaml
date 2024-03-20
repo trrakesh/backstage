@@ -181,3 +181,6 @@ customUI:
     - title: Body Parts
       field: bodyParts
       filter: true
+    - title: Information Author
+      field: informationAuthor
+      filter: true

@@ -37,13 +37,19 @@ export const useCustomPermission = () => {
         })
 
         const projectinformation = roleManagemetnData.info.data.find(x => x.category.key == "projectinformation");
+        
         if (projectinformation) {
             customUiColumns.forEach(x => {
                 const permission = projectinformation.permissions.find(y => y.info.key == x.field);
                 x.visible = permission?.checked || false;
             });
         }
-
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------");
+        console.log("-------------customUiColumns----------------------------------", customUiColumns);
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------");
+        console.log("-----------------------------------------------"); 
 
         return {
             profile,

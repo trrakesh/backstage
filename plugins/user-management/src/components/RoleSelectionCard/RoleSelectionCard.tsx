@@ -42,7 +42,7 @@ export const RoleSelectionCard = (props: {
 
     }, undefined);
 
-    const handleCreateButtonClick = async () => {
+    const handleUpdateButtonClick = async () => {
 
         if (value) {
             const roles = value.rolechecks.filter(x => x.checked).map(y => y.key);
@@ -79,9 +79,9 @@ export const RoleSelectionCard = (props: {
                 }
             </FormGroup>
             <MaterialButton 
-                onClick={handleCreateButtonClick} 
+                onClick={handleUpdateButtonClick} 
                 variant="contained" color="primary" 
-                style={{ marginTop: 8 }}>Create</MaterialButton>
+                style={{ marginTop: 8 }}>Update</MaterialButton>
         </InfoCard>
     );
     

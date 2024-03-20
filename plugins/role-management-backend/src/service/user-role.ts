@@ -29,21 +29,22 @@ export async function getUserRoles(dbClient: any, name: string): Promise<UserRol
 
 export async function createUserRoles(dbClient: any, data: UserRoleData): Promise<void> {
 
-    const whereValue = { name: data.name };
-
-    const found = await dbClient('user-roles')
-        .select()
-        .where(whereValue)
-        .limit(1) as UserRoleData[];
-
-    if (found.length > 0) {
-        await dbClient('user-roles')
-            .update({
-                name: data.name,
-                roles: data.roles,
-            })
-            .where({ id: found[0].id });
-    } else {
-        await dbClient('user-roles').insert(data);
-    }
+    
+    await dbClient('user-roles').insert(data);
+    // const whereValue = { name: data.name };
+    // const found = await dbClient('user-roles')
+    //     .select()
+    //     .where(whereValue)
+    //     .limit(1) as UserRoleData[];
+    // console.log("-------------found----------------------------------", found);
+    // if (found.length > 0) {
+    //     await dbClient('user-roles')
+    //         .update({
+    //             name: data.name,
+    //             roles: data.roles,
+    //         })
+    //         .where({ id: found[0].id });
+    // } else {
+    //     await dbClient('user-roles').insert(data);
+    // }
 }

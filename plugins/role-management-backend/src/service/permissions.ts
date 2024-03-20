@@ -15,11 +15,9 @@ export async function getUserPermissions(dbClient: any, name: string): Promise<R
       
     // }
 
-    console.log(name);
-
     const result = await dbClient('roles').select() as RoleData[];
     const data = result.map(x => {
-        return {id:x.id, info: JSON.parse(x.info)}
+        return {id:x.id, info: x.info}
     });
 
     if (data.length > 0) {

@@ -3,9 +3,10 @@ import { RoleData, RoleManagementData } from "@internal/backstage-plugin-role-ma
 
 
 export async function getRoles(dbClient: any): Promise<RoleManagementData[]> {
+
     const result = await dbClient('roles').select() as RoleData[];
     const data = result.map(x => {
-      return {id:x.id, info: JSON.parse(x.info)}
+      return {id:x.id, info: x.info}
     });
 
     return data as RoleManagementData[];
