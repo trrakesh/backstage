@@ -11,6 +11,8 @@ import { parseJwtPayload } from './jwt';
 import { AUTH_USER_NOT_FOUND } from './errors';
 import { BackstageIdentityResponse, BackstageSignInResult, CustomUser } from './type';
 import { Entity, stringifyEntityRef } from '@backstage/catalog-model';
+import { DatabaseService } from '@backstage/backend-plugin-api';
+import { UserAuth } from '@internal/backstage-plugin-role-management-common';
 
 export const CUSTOM_USER_ANNOTATION = 'custom-user/db-user';
 
@@ -80,13 +82,29 @@ export const defaultAuthHandler = async (
 // };
 
 export async function defaultCustomAuthentication(
+    database: DatabaseService,
     username: string,
     password: string,
 ): Promise<CustomUser> {
    
     try {
-        if (username == 'user1' && password == 'user1') {
+        if (username == 'admin' && password == 'admin') {
             return { username }
+        } else {
+
+            const dbClient = await database.getClient();
+            const whereValue = { username: username, password: password };
+
+            const found = await dbClient('custom-users')
+                .select()
+                .where(whereValue)
+                .limit(1) as UserAuth[];
+        
+            if (found.length == 1) {
+                return {
+                    username: found[0].username,
+                }
+            }
         }
         throw new Error(AUTH_USER_NOT_FOUND); 
     } catch (e) {

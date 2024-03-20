@@ -13,6 +13,8 @@ import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 import { AuthenticationError } from '@backstage/errors';
+import { DatabaseService } from '@backstage/backend-plugin-api';
+import { UserAuth } from '@internal/backstage-plugin-role-management-common';
 
 export class CustomAuthProvider implements AuthProviderRouteHandlers {
 
@@ -22,6 +24,7 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
     private readonly resolverContext: AuthResolverContext;
     private readonly jwtValidator: TokenValidator;
     private readonly cookies: CookiesOptions;
+    private readonly database: DatabaseService;
 
     constructor(options: ProviderConstructor) {
         this.authHandler = options.authHandler;
@@ -30,6 +33,7 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
         this.resolverContext = options.resolverContext;
         this.cookies = options.cookies as CookiesOptions;
         this.jwtValidator = options.tokenValidator || new TokenValidatorNoop();
+        this.database = options.database;
     }
     
     async start(): Promise<void> {
@@ -57,7 +61,7 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
 
             if (username && password) {
 
-                result = await this.authentication(username, password);
+                result = await this.authentication(this.database, username, password);
 
             } else if (token) {
 
@@ -117,22 +121,23 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
         }
     }
 
-    async check(uid: string): Promise<CustomUser> {
-        // const exists = await this.checkUserExists(
-        //     {
-        //         ...this.ldapAuthenticationOptions,
-        //         username: uid,
-        //     },
-        //     authenticate
-        // );
-        // if (!exists) throw new Error(JWT_INVALID_TOKEN);
-        if (uid === 'user1') {          
+    async check(username: string): Promise<CustomUser> {
+
+        const dbClient = await this.database.getClient();
+        const whereValue = { username: username };
+
+        const found = await dbClient('custom-users')
+            .select()
+            .where(whereValue)
+            .limit(1) as UserAuth[];
+    
+        if (found.length == 1) {
             return {
-                username: uid,
+                username: found[0].username,
             }
-        } else {
-            throw new Error(JWT_INVALID_TOKEN);
         }
+
+        throw new Error(JWT_INVALID_TOKEN);
     }
 
     async logout?(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
@@ -172,6 +177,7 @@ export const normal = createAuthProviderIntegration({
                 authentication,
                 resolverContext,
                 tokenValidator: options.tokenValidator,
+                database: options.database,
             });
         };
     },

@@ -49,16 +49,16 @@ const Component: ProviderComponent = ({ onSignInSuccess }) => {
     const { errors } = formState;
     const [ error, setError] = useState('')
 
-    const [ldapIdentity] = useState(new LdapSignInIdentity({provider: 'ldap', discoveryApi }));
+    //const [ldapIdentity] = useState(new LdapSignInIdentity({provider: 'ldap', discoveryApi }));
     const [customIdentity] = useState(new LdapSignInIdentity({provider: 'custom', discoveryApi }));
     
     const handleResult = async ({ username, password }: Auth) => {
 
-        ldapIdentity.login({ username, password })
-        .then(() => {
-            onSignInSuccess(ldapIdentity);
-        })
-        .catch(_ => {
+        // ldapIdentity.login({ username, password })
+        // .then(() => {
+        //     onSignInSuccess(ldapIdentity);
+        // })
+        // .catch(_ => {
 
             customIdentity.login({ username, password })
             .then(() => {
@@ -67,7 +67,7 @@ const Component: ProviderComponent = ({ onSignInSuccess }) => {
             .catch(_ => {
                 setError('Invalid username or password');
             })
-        })
+        //})
     };
 
     return (

@@ -74,3 +74,13 @@ export const RoleSelectionCard = userManagementPlugin.provide(
     },
   }),
 );
+
+
+export const CreateUserPage = userManagementPlugin.provide(
+  createRoutableExtension({
+    name: 'CreateUserPage',
+    component: () =>
+      import('./components/CreateUsersComponent').then(m => m.CreateUsersComponent),
+    mountPoint: rootRouteRef,
+  }),
+);

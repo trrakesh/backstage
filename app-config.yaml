@@ -81,39 +81,39 @@ auth:
       cookies:
         secure: false # https cookies or not
         field: 'backstage-token-custom' # default
-    ldap:
-      development:
-        cookies:
-          secure: false # https cookies or not
-          field: 'backstage-token' # default
-        ldapAuthenticationOptions:
-          userSearchBase: 'ou=People,dc=example,dc=com' # REQUIRED
-          usernameAttribute: 'uid' # defaults to `uid`
-          adminDn: cn=admin,dc=example,dc=com
-          adminPassword: 'Eadmed@123'
-          ldapOpts:
-            url:
-              - 'ldap://57.180.241.191:389'
-            tlsOptions:
-              rejectUnauthorized: false
+    # ldap:
+    #   development:
+    #     cookies:
+    #       secure: false # https cookies or not
+    #       field: 'backstage-token' # default
+    #     ldapAuthenticationOptions:
+    #       userSearchBase: 'ou=People,dc=example,dc=com' # REQUIRED
+    #       usernameAttribute: 'uid' # defaults to `uid`
+    #       adminDn: cn=admin,dc=example,dc=com
+    #       adminPassword: 'Eadmed@123'
+    #       ldapOpts:
+    #         url:
+    #           - 'ldap://57.180.241.191:389'
+    #         tlsOptions:
+    #           rejectUnauthorized: false
 catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location, Product]
-  processors:
-    ldapOrg:
-      ## Example for how to add your enterprise LDAP server
-      providers:
-        - target: ldap://57.180.241.191:389
-          bind:
-            dn: cn=admin,dc=example,dc=com
-            secret: Eadmed@123
-          users:
-            dn: ou=People,dc=example,dc=com
-          groups:
-            dn: ou=Groups,dc=example,dc=com
+  # processors:
+  #   ldapOrg:
+  #     ## Example for how to add your enterprise LDAP server
+  #     providers:
+  #       - target: ldap://57.180.241.191:389
+  #         bind:
+  #           dn: cn=admin,dc=example,dc=com
+  #           secret: Eadmed@123
+  #         users:
+  #           dn: ou=People,dc=example,dc=com
+  #         groups:
+  #           dn: ou=Groups,dc=example,dc=com
             # options:
             #   filter: (&(objectClass=some-group-class)(!(groupType=email)))
   locations:
@@ -128,10 +128,10 @@ catalog:
         - allow: [Template]
 
     # Local example organizational data
-    - type: ldap-org
-      target: ldap://57.180.241.191:389
-      rules:
-        - allow: [User, Group]
+    # - type: ldap-org
+    #   target: ldap://57.180.241.191:389
+    #   rules:
+    #     - allow: [User, Group]
 
     ## Uncomment these lines to add more example data
     # - type: url

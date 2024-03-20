@@ -8,10 +8,10 @@ import { ConfluenceUpdateProcess } from "@internal/backstage-plugin-confluence-c
 
 import { UserEntityProvider } from "@internal/backstage-plugin-custom-user-backend";
 
-import {
-  LdapOrgEntityProvider,
-  LdapOrgReaderProcessor,
-} from '@backstage/plugin-catalog-backend-module-ldap';
+// import {
+//   LdapOrgEntityProvider,
+//   LdapOrgReaderProcessor,
+// } from '@backstage/plugin-catalog-backend-module-ldap';
 
 export default async function createPlugin(
   env: PluginEnvironment,
@@ -19,35 +19,35 @@ export default async function createPlugin(
 
   const builder = await CatalogBuilder.create(env);
 
-
   builder.addProcessor(new ScaffolderEntitiesProcessor());
   builder.addProcessor(new ProductEntitiesProcessor());
   builder.addProcessor(new ConfluenceUpdateProcess(env.config));
 
-  builder.addProcessor(
-    LdapOrgReaderProcessor.fromConfig(env.config, {
-      logger: env.logger,
-    }),
-  );
+  // builder.addProcessor(
+  //   LdapOrgReaderProcessor.fromConfig(env.config, {
+  //     logger: env.logger,
+  //   }),
+  // );
 
   // The target parameter below needs to match the ldap.providers.target
   // value specified in your app-config.
-  builder.addEntityProvider(
-    LdapOrgEntityProvider.fromConfig(env.config, {
-      id: 'our-ldap-master',
-      target: 'ldap://57.180.241.191:389',
-      logger: env.logger,
-      schedule: env.scheduler.createScheduledTaskRunner({
-        frequency: { minutes: 60 },
-        timeout: { minutes: 15 },
-      }),
-    }),
-  );
+  // builder.addEntityProvider(
+  //   LdapOrgEntityProvider.fromConfig(env.config, {
+  //     id: 'our-ldap-master',
+  //     target: 'ldap://57.180.241.191:389',
+  //     logger: env.logger,
+  //     schedule: env.scheduler.createScheduledTaskRunner({
+  //       frequency: { minutes: 60 },
+  //       timeout: { minutes: 15 },
+  //     }),
+  //   }),
+  // );
 
   builder.addEntityProvider(UserEntityProvider.fromConfig(
     env.logger,
+    env.database,
     env.scheduler.createScheduledTaskRunner({
-      frequency: { minutes: 60 },
+      frequency: { minutes: 3 },
       timeout: { minutes: 15 },
     }),
   ));

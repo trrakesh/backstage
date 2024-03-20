@@ -6,10 +6,10 @@ import {
 import { Router } from 'express';
 import { PluginEnvironment } from '../types';
 
-import {
-  ldap,
-  JWTTokenValidator,
-} from '@immobiliarelabs/backstage-plugin-ldap-auth-backend';
+// import {
+//   ldap,
+//   JWTTokenValidator,
+// } from '@immobiliarelabs/backstage-plugin-ldap-auth-backend';
 
 import {
   normal,
@@ -47,27 +47,28 @@ export default async function createPlugin(
       // your own, see the auth documentation for more details:
       //
       //   https://backstage.io/docs/auth/identity-resolver
-      ldap: ldap.create({
-        tokenValidator: new JWTTokenValidator(new Keyv()),
-      }),
+      // ldap: ldap.create({
+      //   tokenValidator: new JWTTokenValidator(new Keyv()),
+      // }),
       custom: normal.create({
-        tokenValidator: new CustomJWTTokenValidator(new Keyv()),
+          tokenValidator: new CustomJWTTokenValidator(new Keyv()),
+          database: env.database
       }),
       
-      github: providers.github.create({
-        signIn: {
-          resolver(_, ctx) {
-            const userRef = 'user:default/guest'; // Must be a full entity reference
-            return ctx.issueToken({
-              claims: {
-                sub: userRef, // The user's own identity
-                ent: [userRef], // A list of identities that the user claims ownership through
-              },
-            });
-          },
-          // resolver: providers.github.resolvers.usernameMatchingUserEntityName(),
-        },
-      }),
+      // github: providers.github.create({
+      //   signIn: {
+      //     resolver(_, ctx) {
+      //       const userRef = 'user:default/guest'; // Must be a full entity reference
+      //       return ctx.issueToken({
+      //         claims: {
+      //           sub: userRef, // The user's own identity
+      //           ent: [userRef], // A list of identities that the user claims ownership through
+      //         },
+      //       });
+      //     },
+      //     // resolver: providers.github.resolvers.usernameMatchingUserEntityName(),
+      //   },
+      // }),
     },
   });
 }

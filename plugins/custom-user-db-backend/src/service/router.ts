@@ -19,6 +19,11 @@ export async function createRouter(
     logger.info('PONG!');
     response.json({ status: 'ok' });
   });
+
+
+
+
+
   router.use(errorHandler());
   return router;
 }

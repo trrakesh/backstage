@@ -83,6 +83,18 @@ export type UserRole = {
   roles: string[]
 }
 
+export type UserAuth = {
+  username: string; 
+  password: string,
+  display: string,
+  email: string
+};
+
+export type ValidateUserAuth = {
+  username: string; 
+  password: string,
+};
+
 export interface RoleMappingApi {
 
   getRoles(): Promise<RoleManagementData[]>;
@@ -93,6 +105,10 @@ export interface RoleMappingApi {
   createUserRole(data: UserRole): Promise<RoleMappingApiStatus>;
 
   getUserPermission(name: string): Promise<RoleManagementData>;
+
+  createUser(user: UserAuth): Promise<RoleMappingApiStatus>;
+  validateUser(validate: ValidateUserAuth): Promise<RoleMappingApiStatus>;
+  existUser(username: string): Promise<RoleMappingApiStatus>;
 
   // getImportEntity(filter: ImportEntityFilter): Promise<ImportEntityData[]>;
   // createImportEntity(data: ImportEntityData): Promise<ImportEntityMappingApiStatus>;

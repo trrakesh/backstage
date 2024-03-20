@@ -5,12 +5,23 @@ exports.up = knex => {
             table.json('info');
             table.timestamps();
         })
+
         .createTable('user-roles', table => {
             table.increments();
             table.string('name');
             table.json('roles');
             table.timestamps();
         })
+
+        .createTable('custom-users', table => {
+            table.increments();
+            table.string('username');
+            table.string('password');
+            table.string('display');
+            table.string('email');
+            table.timestamps();
+        })
+
         // .createTable('imported-entities', table => {
         //     table.increments();
         //     table.json('entity');
@@ -28,5 +39,6 @@ exports.up = knex => {
 exports.down = knex => {
     return knex.schema
         .dropTable('user-roles')
-        .dropTable('roles');
+        .dropTable('roles')
+        .dropTable('custom-users');
 };

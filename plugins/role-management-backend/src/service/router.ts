@@ -6,9 +6,10 @@ import { Logger } from 'winston';
 import { applyDatabaseMigrations } from '../databases/migrations';
 import { getRoles, insertRole, updateRole } from './role-helper';
 //import { getImportEntity, getImportEntityFilter, insertImportEntity, updateImportEntity } from './import-entity-helper';
-import { RoleManagementData, UserRole } from '@internal/backstage-plugin-role-management-common';
+import { RoleManagementData, UserAuth, UserRole, ValidateUserAuth } from '@internal/backstage-plugin-role-management-common';
 import { createUserRoles, getUserRoles } from './user-role';
 import { getUserPermissions } from './permissions';
+import { createUser, validateUser, existUser } from './users';
 
 export interface RouterOptions {
   logger: Logger;
@@ -21,6 +22,13 @@ export async function createRouter(
 
   const { logger, database } = options;
   const dbClient = await database.getClient();
+
+  console.log("---------------------createRouter--------------------------");
+  console.log("-----------------------------------------------");
+  console.log(dbClient);
+  console.log("-----------------------------------------------");
+  console.log("-----------------------------------------------");
+  console.log("-----------------------------------------------");
 
   await applyDatabaseMigrations(dbClient);
 
@@ -87,6 +95,37 @@ export async function createRouter(
       response.send(item);
     }
   });
+
+
+  router.post('/user-create',  async (request, response) => {
+    const data = request.body as UserAuth;
+    await createUser(dbClient, data);
+    response.json({ status: 'ok' });
+  });
+
+  router.post('/user-validate', async (request, response) => {
+    const data = request.body as ValidateUserAuth;
+    const valid = await validateUser(dbClient, data);
+    if (valid) {
+      response.json({ status: 'ok' });
+    } else {
+      response.json({ status: 'notvalid' });
+    }
+  });
+
+  router.get('/user-exist', async (request, response) => {
+
+    const { query } = request;
+    if (query.username) {
+      const exist = await existUser(dbClient, query.username as string);
+      if (exist) {
+        response.json({ status: 'ok' });
+      }
+    }
+
+    response.json({ status: 'notfound' });
+  });
+
 
 
   // router.get('/import-entity', async (request, response) => {

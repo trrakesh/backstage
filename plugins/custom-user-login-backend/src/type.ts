@@ -6,6 +6,7 @@ import {
 } from "./auth";
 
 import { TokenValidator } from "./jwt";
+import { DatabaseService } from '@backstage/backend-plugin-api';
 
 import {
     AuthResolverContext,
@@ -90,13 +91,13 @@ export type ProviderCreateOptions = {
     signIn?: {
         resolver?: typeof defaultSigninResolver;
     };
-
     // Custom resolvers
     resolvers?: {
         authentication?: typeof defaultCustomAuthentication;
     };
     // Custom validator function for the JWT token if needed
     tokenValidator?: TokenValidator;
+    database: DatabaseService;
 };
 
 export type BackstageCustomAuthConfiguration = {
@@ -110,6 +111,7 @@ export type ProviderConstructor = {
     authentication: typeof defaultCustomAuthentication;
     resolverContext: AuthResolverContext;
     tokenValidator?: TokenValidator;
+    database: DatabaseService;
 };
 
 export type CustomUser = {

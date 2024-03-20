@@ -10,6 +10,7 @@ import {
     ANNOTATION_ORIGIN_LOCATION,
     Entity,
 } from '@backstage/catalog-model';
+import { DatabaseService } from '@backstage/backend-plugin-api';
 
 
 export const DB_ANNOTATION = 'backstage.io/db-user';
@@ -20,11 +21,12 @@ export class UserEntityProvider implements EntityProvider {
     private connection?: EntityProviderConnection;
     private scheduleFn?: () => Promise<void>;
 
-    static fromConfig(logger: Logger, schedule: any): UserEntityProvider {
+    static fromConfig(logger: Logger, database: DatabaseService, schedule: any): UserEntityProvider {
 
         const result = new UserEntityProvider({
             id: "custom-user-entity",
             logger,
+            database
         });
 
         result.schedule(schedule);
@@ -37,6 +39,7 @@ export class UserEntityProvider implements EntityProvider {
         private options: {
             id: string;
             logger: Logger;
+            database: DatabaseService;
         },
     ) { }
 
@@ -49,17 +52,19 @@ export class UserEntityProvider implements EntityProvider {
         await this.scheduleFn?.();
     }
 
-    async read(options?: { logger?: Logger }) {
+    async read(options: { logger: Logger, database: DatabaseService }) {
         if (!this.connection) {
             throw new Error('Not initialized');
         }
 
-        const logger = options?.logger ?? this.options.logger;
+        const { logger, database } = options;
+        
         const { markReadComplete } = trackProgress(logger);
 
         const { users, groups } = await readDBOrg(
             {
                 logger,
+                database,
             },
         );
 
@@ -93,8 +98,10 @@ export class UserEntityProvider implements EntityProvider {
                         taskInstanceId: uuid.v4(),
                     });
 
+                    const { database } = this.options;
+
                     try {
-                        await this.read({ logger });
+                        await this.read({ logger, database });
                     } catch (error) {
                         logger.error(
                             `${this.getProviderName()} refresh failed, ${error}`,

@@ -34,9 +34,15 @@ import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 
-import { CreateRolePage, GroupManagementPage, RoleManagementPage, UserManagementPage, } from '@internal/backstage-plugin-user-management';
-import { SignInPage } from '@internal/backstage-plugin-custom-user-login';
+import { 
+  CreateRolePage, 
+  CreateUserPage, 
+  GroupManagementPage, 
+  RoleManagementPage, 
+  UserManagementPage
+} from '@internal/backstage-plugin-user-management';
 
+import { SignInPage } from '@internal/backstage-plugin-custom-user-login';
 import { CustomUiPage } from '@internal/backstage-plugin-custom-ui';
 
 const app = createApp({
@@ -110,6 +116,7 @@ const routes = (
     <Route path="/group-management" element={<GroupManagementPage />} />
     <Route path="/role-management" element={<RoleManagementPage />} />
     <Route path="/create-role" element={<CreateRolePage />} />
+    <Route path="/create-user" element={<CreateUserPage />} />
   </FlatRoutes>
 );
 

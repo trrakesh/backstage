@@ -4,8 +4,11 @@ import {
     RoleManagementData, 
     RoleMappingApi, 
     RoleMappingApiStatus,
-    UserRole, 
+    UserAuth,
+    UserRole,
+    ValidateUserAuth, 
 } from "@internal/backstage-plugin-role-management-common"
+
 import { ApiBase } from './ApiBase';
 
 export const roleMappingApiRef = createApiRef<RoleMappingApi>({
@@ -98,6 +101,47 @@ export class RoleMappingApiClient extends ApiBase implements RoleMappingApi {
         }
 
         return await res.json() as RoleManagementData;
+    }
+
+    async createUser(user: UserAuth): Promise<RoleMappingApiStatus> {
+        
+        const info = await this.getUrlAndToken("roles");
+
+        const res = await fetch(`${info.baseUrl}/user-create`, this.getPostHeader(info.token, user));
+
+        if (!res.ok) {
+            throw await ResponseError.fromResponse(res);
+        }
+
+        return await res.json() as RoleMappingApiStatus;
+    }
+
+    async validateUser(validate: ValidateUserAuth): Promise<RoleMappingApiStatus> {
+        const info = await this.getUrlAndToken("roles");
+
+        const res = await fetch(`${info.baseUrl}/user-validate`, this.getPostHeader(info.token, validate));
+
+        if (!res.ok) {
+            throw await ResponseError.fromResponse(res);
+        }
+
+        return await res.json() as RoleMappingApiStatus;
+    }
+
+    async existUser(username: string): Promise<RoleMappingApiStatus>
+    {
+        const info = await this.getUrlAndToken("roles");
+
+        const query = new URLSearchParams();
+        query.append("username", username);
+
+        const res = await fetch(`${info.baseUrl}/user-exist?${query}`, this.getGetHeader(info.token));
+
+        if (!res.ok) {
+            throw await ResponseError.fromResponse(res);
+        }
+
+        return await res.json() as RoleMappingApiStatus;
     }
 
     // async getImportEntity(filter: ImportEntityFilter): Promise<ImportEntityData[]> {
