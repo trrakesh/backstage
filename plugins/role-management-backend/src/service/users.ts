@@ -3,12 +3,6 @@ import { UserAuth, ValidateUserAuth } from "@internal/backstage-plugin-role-mana
 
 export async function createUser(dbClient: any, data: UserAuth): Promise<void>  {
 
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-------------createUser----------------------------------", data);
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
-    console.log("-----------------------------------------------");
     try {
         await dbClient('custom-users').insert(data);
     } catch (error) {

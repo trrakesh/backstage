@@ -44,12 +44,6 @@ export const useCustomPermission = () => {
                 x.visible = permission?.checked || false;
             });
         }
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------");
-        console.log("-------------customUiColumns----------------------------------", customUiColumns);
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------"); 
 
         return {
             profile,

@@ -20,8 +20,6 @@ export async function readDBOrg(
 
     options.logger.info("readDBOrg");
 
-    
-
     const users: UserEntity[] = [];
     const groups: GroupEntity[] = [];
 
@@ -39,44 +37,15 @@ export async function readDBOrg(
         });
     
     } catch {
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------");
-        console.log("-------------db not created yet----------------------------------");
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------");
-        console.log("-----------------------------------------------");
+        console.error(
+            'Error while reading db'
+        );
     }
-
-
-
-    // const user2 = await defaultUserTransformer("user2", "User 2", "user2@exaple.coom");
-    // const user3 = await defaultUserTransformer("user3", "User 3", "user3@exaple.coom");
-    // const user4 = await defaultUserTransformer("user4", "User 4", "user4@exaple.coom");
-    // const user5 = await defaultUserTransformer("user5", "User 5", "user5@exaple.coom");
-
-    // users.push(user2);
-    // users.push(user3);
-    // users.push(user4);
-    // users.push(user5);
-
-    // const group1 = await defaultGroupTransformer("group1", "Group 1", "group1@exaple.coom");
-    // const group2 = await defaultGroupTransformer("group2", "Group 2", "group2@exaple.coom");
-    // const group3 = await defaultGroupTransformer("group3", "Group 3", "group3@exaple.coom");
-    // const group4 = await defaultGroupTransformer("group4", "Group 4", "group4@exaple.coom");
-    // const group5 = await defaultGroupTransformer("group5", "Group 5", "group5@exaple.coom");
-
-    // groups.push(group1);
-    // groups.push(group2);
-    // groups.push(group3);
-    // groups.push(group4);
-    // groups.push(group5);
 
     return {
         users,
         groups
     }
-
-
 }
 
 export function defaultUserTransformer(

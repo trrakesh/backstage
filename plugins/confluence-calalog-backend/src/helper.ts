@@ -92,7 +92,6 @@ interface ProjectInfo {
       };
   
       const response = await fetch(url, options);
-      // console.log(response);
   
       if (!response.ok) {
         // throw new Error('Failed to fetch Confluence page info');
@@ -100,8 +99,6 @@ interface ProjectInfo {
       }
   
       const data = await response.json();
-  
-      // console.log(data);
   
       return data;
     } catch (error) {

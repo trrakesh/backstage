@@ -23,13 +23,6 @@ export async function createRouter(
   const { logger, database } = options;
   const dbClient = await database.getClient();
 
-  console.log("---------------------createRouter--------------------------");
-  console.log("-----------------------------------------------");
-  console.log(dbClient);
-  console.log("-----------------------------------------------");
-  console.log("-----------------------------------------------");
-  console.log("-----------------------------------------------");
-
   await applyDatabaseMigrations(dbClient);
 
   const router = Router();
@@ -53,7 +46,7 @@ export async function createRouter(
   router.post('/', async (request, response) => {
     const data = request.body as RoleManagementData;
 
-    const insertItem = { info: JSON.stringify(data.info) };
+    const insertItem = { info: data.info };
     await insertRole(dbClient, insertItem);
 
     response.send({ result: 'success' });
@@ -62,7 +55,7 @@ export async function createRouter(
   router.put('/', async (request, response) => {
     const data = request.body as RoleManagementData;
 
-    const insertItem = { id: data.id, info: JSON.stringify(data.info) };
+    const insertItem = { id: data.id, info: data.info };
     await updateRole(dbClient, insertItem);
 
     response.send({ result: 'success' });
@@ -124,80 +117,6 @@ export async function createRouter(
 
     response.json({ status: 'notfound' });
   });
-
-
-
-  // router.get('/import-entity', async (request, response) => {
-  //   const { query } = request;
-
-  //   if (query.kind) {
-
-  //     const filterParts = {kind: query.kind} as ImportEntityFilter;
-  //     const items = await getImportEntityFilter(dbClient, filterParts);
-
-  //     response.send(items);
-
-  //   } else {
-  //     const items = await getImportEntity(dbClient);
-      
-  //     response.send(items);
-  //   }
-  // });
-
-  // // router.get('/import-entity/profile', async (request, response) => {
-  // //   const { query } = request;
-
-  // //   if (query && query.mail) {
-
-  // //     const items = await getImportEntity(dbClient);
-  // //     const found = items.find(x => {
-  // //       const profile = x.entity.spec?.profile as ProfileInfo
-  // //       return profile.email == query.mail
-  // //     });
-
-  // //     if (found) {
-  // //       const importEntityData = found as ImportEntityData;
-  // //       const rolenames = importEntityData.roles;
-
-  // //       const roles = await getRoles(dbClient);
-  // //       const currentRole = roles.find(x => x.info.roleName === rolenames[0]);
-  // //       if (currentRole) {
-  // //         response.send(currentRole.info.data);
-  // //         return;
-  // //       }
-  // //     }
-  // //     response.send([] as RolePermissonData[]);
-  // //   }
-  // // });
-
-  // // router.post('/import-entity', async (request, response) => {
-  // //   const data = request.body as ImportEntityData;
-
-  // //   const insertItem = { 
-  // //     kind: data.kind,
-  // //     entity: JSON.stringify(data.entity),
-  // //     groups: JSON.stringify(data.groups),
-  // //     roles: JSON.stringify(data.roles),
-  // //   };
-  // //   await insertImportEntity(dbClient, insertItem);
-
-  // //   response.send({ result: 'success' });
-  // // });
-
-  // // router.put('/import-entity', async (request, response) => {
-  // //   const data = request.body as ImportEntityData;
-
-  // //   const insertItem = { 
-  // //     id: data.id,
-  // //     kind: data.kind,
-  // //     entity: JSON.stringify(data.entity),
-  // //     groups: JSON.stringify(data.groups),
-  // //     roles: JSON.stringify(data.roles),
-  // //   };
-  // //   await updateImportEntity(dbClient, insertItem);
-
-  // //   response.send({ result: 'success' });
-  // // });
 
   router.use(errorHandler());
   return router;

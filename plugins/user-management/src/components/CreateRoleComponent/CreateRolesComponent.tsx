@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, FormControlLabel, Grid, Typography } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Grid, Snackbar, Typography } from '@material-ui/core';
 import {
   Header,
   Page,
@@ -12,6 +12,7 @@ import MaterialButton from '@material-ui/core/Button';
 
 import data from './data.json';
 import { RoleManagementData } from '@internal/backstage-plugin-role-management-common';
+import { useNavigate } from 'react-router-dom';
 
 import { useApi } from '@backstage/core-plugin-api';
 import { roleMappingApiRef } from '../../apis';
@@ -37,8 +38,11 @@ export const CreateRolesComponent = () => {
   }
 
   const roleApi = useApi(roleMappingApiRef);
+  const navigate = useNavigate();
   const blankData = getBlankData();
   const [roleDetails, setRoleDetails] = useState<RoleManagementData>(blankData);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnakbarMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -68,12 +72,21 @@ export const CreateRolesComponent = () => {
 
   const handleCreateButtonClick = async () => {
     if (roleDetails) {
-      await roleApi.createRole(roleDetails);
-      // if (!mode) {
-      //   await roleApi.updateRole(roleDetails);
-      // } else {
-      //   await roleApi.createRole(roleDetails);
-      // }
+      
+      try {
+
+        await roleApi.createRole(roleDetails);
+        setOpenSnackbar(true);
+        setSnakbarMessage('Created successfully');
+        setTimeout(() => {
+          setOpenSnackbar(false);
+          navigate('/role-management');
+        }, 3000)
+
+      } catch (error) {
+        
+      }
+
     }
   };
 
@@ -133,6 +146,14 @@ export const CreateRolesComponent = () => {
               </Grid>
             ))}
         </Grid>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={() => setOpenSnackbar(false)}
+          message={snackbarMessage}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          style={{ alignItems: 'center' }}
+        />
       </Content>
     </Page>
   )

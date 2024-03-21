@@ -5,19 +5,16 @@ import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import { makeStyles } from "@material-ui/core";
 import isEmpty from 'lodash/isEmpty';
 
-
 import {
   Header,
   Page,
   Content,
-  ContentHeader,
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 import { roleMappingApiRef } from '../../apis';
 import { UserAuth } from "@internal/backstage-plugin-role-management-common";
 import Snackbar from '@mui/material/Snackbar';
-import {useNavigate} from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 export type CustomProviderClassKey = 'form' | 'button';
 
@@ -62,42 +59,25 @@ export const CreateUsersComponent = () => {
   const userApi = useApi(roleMappingApiRef);
   const classes = useFormStyles();
   const navigate = useNavigate();
-  //const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState } = useForm<UserAuth>({
     mode: 'onChange',
   });
   const { errors } = formState;
-  // const [ error, setError] = useState('')
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnakbarMessage] = useState('');
 
-  const handleCreateButtonClick = async () => {
-
-    debugger;
-    //setShowPassword(!showPassword);
-  };
-
-  // const handleClickShowPassword = async () => {
-  //   setShowPassword(!showPassword);
-  // };
-
-  // const handleMouseDownPassword = async () => {
-
-  // };
-
 
   const handleResult = async ({ username, password, email, display }: UserAuth) => {
-    debugger;
-    userApi.createUser({
+    
+    await userApi.createUser({
       username, password, email, display
     })
     setOpenSnackbar(true);
     setSnakbarMessage('Created successfully');
-    setTimeout(()=>{
+    setTimeout(() => {
       setOpenSnackbar(false);
       navigate('/user-management');
-    },3000)
-
+    }, 3000)
   };
 
   return (

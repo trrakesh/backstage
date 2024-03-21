@@ -84,8 +84,6 @@ export class CustomAuthProvider implements AuthProviderRouteHandlers {
             // This is used to return a backstage formated profile object
             const { profile, entity } = await this.authHandler(result, ctx );
 
-            console.log(entity);
-            
             // this sign-in the user into backstage and return an object with the token
             const backstageIdentity = await this.signInResolver(entity, ctx);
 
